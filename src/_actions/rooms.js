@@ -1,12 +1,16 @@
 import {
   METHOD_GET,
   METHOD_POST,
+  METHOD_PUT,
   GET_ALL_ROOMS_PENDING,
   GET_ALL_ROOMS_FULFILLED,
   GET_ALL_ROOMS_REJECTED,
   POST_ROOM_PENDING,
   POST_ROOM_FULFILLED,
   POST_ROOM_REJECTED,
+  PUT_ROOM_PENDING,
+  PUT_ROOM_FULFILLED,
+  PUT_ROOM_REJECTED,
 } from '../config/constant';
 
 export const fetchData = (method, bool) => {
@@ -18,6 +22,9 @@ export const fetchData = (method, bool) => {
       break;
     case METHOD_POST:
       methodType = POST_ROOM_PENDING;
+      break;
+    case METHOD_PUT:
+      methodType = PUT_ROOM_PENDING;
       break;
   }
 
@@ -37,6 +44,9 @@ export const fetchDataFulfilled = (method, data) => {
     case METHOD_POST:
       methodType = POST_ROOM_FULFILLED;
       break;
+    case METHOD_PUT:
+      methodType = PUT_ROOM_FULFILLED;
+      break;
   }
 
   return {
@@ -55,6 +65,9 @@ export const fetchDataRejected = (method, error) => {
       break;
     case METHOD_POST:
       methodType = POST_ROOM_REJECTED;
+      break;
+    case METHOD_PUT:
+      methodType = PUT_ROOM_REJECTED;
       break;
   }
   return {

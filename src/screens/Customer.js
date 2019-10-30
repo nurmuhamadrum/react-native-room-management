@@ -16,8 +16,7 @@ import {getAuthKey} from './../config/auth';
 import {setHeaderAuth} from './../config/api';
 import fetchCustomers from './../_store/customers';
 
-import {METHOD_GET, METHOD_POST} from './../config/constant';
-import {identity} from 'rxjs';
+import {METHOD_GET, METHOD_POST, METHOD_PUT} from './../config/constant';
 
 class Customer extends Component {
   constructor() {
@@ -26,11 +25,11 @@ class Customer extends Component {
       items: [],
       isLoading: true,
       isModalVisible: false,
-      // token: null,
-      // id: null,
       name: '',
       identity_number: '',
       phone_number: '',
+      isModalEditVisible: false,
+      idCustomer: '',
     };
   }
 
@@ -48,40 +47,18 @@ class Customer extends Component {
     }
   };
 
-  handleFlatlist = (image, id, name, phone) => {
-    return (
-      <View
-        style={{
-          borderRadius: 5,
-          marginBottom: 10,
-          marginTop: 10,
-          marginHorizontal: 10,
-          backgroundColor: '#006A9C',
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <Image
-            style={{
-              height: 90,
-              width: 90,
-              borderRadius: 5,
-              marginTop: 7,
-              marginLeft: 7,
-              marginBottom: 7,
-            }}
-            source={{uri: image}}
-          />
-          <View style={{marginLeft: 20, marginTop: 13}}>
-            <Text style={{fontSize: 20, color: 'white'}}>{name}</Text>
-            <Text style={{color: 'white'}}>{id}</Text>
-            <Text style={{color: 'white', fontSize: 15}}>{phone}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  };
-
   toggleModal = () => {
     this.setState({isModalVisible: !this.state.isModalVisible});
+  };
+
+  toggleModalEdit = (idCustomer, name, identity_number, phone_number) => {
+    this.setState({
+      idCustomer,
+      name,
+      identity_number,
+      phone_number,
+    });
+    this.setState({isModalEditVisible: !this.state.isModalEditVisible});
   };
 
   handleAddCustomers = () => {
@@ -110,6 +87,33 @@ class Customer extends Component {
     }
   };
 
+  handleEditCustomers = () => {
+    if (
+      (this.state.name, this.state.identity_number, this.state.phone_number)
+    ) {
+      this.updateDataCustomer();
+    } else {
+      alert('Please Enter The Field!');
+    }
+  };
+
+  updateDataCustomer = async () => {
+    try {
+      const data = await getAuthKey();
+      setHeaderAuth(data.token);
+      this.props.fetchCustomers(
+        METHOD_PUT,
+        this.state.name,
+        this.state.identity_number,
+        this.state.phone_number,
+        this.state.idCustomer,
+      );
+      this.toggleModalEdit();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   handleName = name => {
     this.setState({name});
   };
@@ -122,16 +126,52 @@ class Customer extends Component {
     this.setState({phone_number});
   };
 
+  handleFlatlist = (id, name, idNum, phoneNum, image) => {
+    return (
+      <TouchableOpacity
+        onPress={() => this.toggleModalEdit(id, name, idNum, phoneNum)}>
+        <View
+          style={{
+            borderRadius: 5,
+            marginBottom: 10,
+            marginTop: 10,
+            marginHorizontal: 15,
+            backgroundColor: '#fafafa',
+            elevation: 3,
+            borderWidth: 0.5,
+            borderColor: '#344DD5',
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <Image
+              style={{
+                height: 75,
+                width: 75,
+                borderRadius: 5,
+                marginTop: 7,
+                marginLeft: 7,
+                marginBottom: 7,
+              }}
+              source={{uri: image}}
+            />
+            <View style={{marginLeft: 20, marginTop: 13}}>
+              <Text style={{fontSize: 20, color: 'black'}}>{name}</Text>
+              <Text style={{color: 'black'}}>{idNum}</Text>
+              <Text style={{color: 'black', fontSize: 15}}>{phoneNum}</Text>
+            </View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   render() {
     const {customers} = this.props;
-
     if (customers.error)
       return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{fontWeight: 'bold'}}>Server Error</Text>
+          <Text style={{fontWeight: 'bold'}}>{customers.error.message}</Text>
         </View>
       );
-
     if (customers.isLoading)
       return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -141,7 +181,7 @@ class Customer extends Component {
 
     return (
       <View style={style.container}>
-        <Header style={{backgroundColor: '#006A9C'}}>
+        <Header style={{backgroundColor: '#344DD5'}}>
           <Body style={style.textHeader}>
             <Title>CUSTOMER</Title>
           </Body>
@@ -150,10 +190,11 @@ class Customer extends Component {
           data={customers.data}
           renderItem={({item}) =>
             this.handleFlatlist(
-              item.image,
-              item.identity_number,
+              item.id,
               item.name,
+              item.identity_number,
               item.phone_number,
+              item.image,
             )
           }
           keyExtractor={item => item.id.toString()}
@@ -164,6 +205,7 @@ class Customer extends Component {
           position="bottomRight">
           <Icon name="plus" />
         </Fab>
+
         <View style={{flex: 1}}>
           <Modal isVisible={this.state.isModalVisible}>
             <View style={style.Modal}>
@@ -221,6 +263,64 @@ class Customer extends Component {
             </View>
           </Modal>
         </View>
+
+        <View style={{flex: 1}}>
+          <Modal isVisible={this.state.isModalEditVisible}>
+            <View style={style.Modal}>
+              <View style={{alignItems: 'center'}}>
+                <Text style={style.modalText}>EDIT CUSTOMER</Text>
+              </View>
+              <View style={{marginHorizontal: 20, marginTop: 10}}>
+                <Text style={style.RoomName}>Name*</Text>
+                <Item style={style.inputRoom} regular>
+                  <Input
+                    placeholder="Enter the Customer Name..."
+                    onChangeText={name => this.handleName(name)}
+                  />
+                </Item>
+              </View>
+
+              <View style={{marginHorizontal: 20, marginTop: 10}}>
+                <Text style={style.RoomName}>Identity Number*</Text>
+                <Item style={style.inputRoom} regular>
+                  <Input
+                    placeholder="Enter the Identity Number..."
+                    onChangeText={identity => this.handleIdentity(identity)}
+                  />
+                </Item>
+              </View>
+
+              <View style={{marginHorizontal: 20, marginTop: 10}}>
+                <Text style={style.RoomName}>Phone Number*</Text>
+                <Item style={style.inputRoom} regular>
+                  <Input
+                    placeholder="Enter the Phone Number..."
+                    onChangeText={phone => this.handlePhone(phone)}
+                  />
+                </Item>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  marginTop: 20,
+                }}>
+                <TouchableOpacity
+                  style={style.modalCancel}
+                  title="Hide modal"
+                  onPress={() => this.toggleModalEdit()}>
+                  <Text style={{color: 'white', fontSize: 18}}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={style.modalSave}
+                  onPress={() => this.handleEditCustomers()}>
+                  <Text style={{color: 'white', fontSize: 18}}>Save</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        </View>
       </View>
     );
   }
@@ -246,6 +346,7 @@ export default connect(
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F8F9FF',
   },
   room: {
     flexDirection: 'row',
@@ -265,10 +366,6 @@ const style = StyleSheet.create({
     fontWeight: 'bold',
     alignContent: 'center',
   },
-  // modalCancel: {
-  //   fontSize: 18,
-  //   color: 'white',
-  // },
   inputRoom: {
     borderWidth: 2,
     borderRadius: 5,
@@ -281,7 +378,7 @@ const style = StyleSheet.create({
     marginBottom: 5,
   },
   modalSave: {
-    backgroundColor: '#006A9C',
+    backgroundColor: '#344DD5',
     paddingVertical: 10,
     paddingHorizontal: 30,
     marginBottom: 20,

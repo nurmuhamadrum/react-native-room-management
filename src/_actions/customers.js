@@ -1,12 +1,16 @@
 import {
   METHOD_GET,
-  METHOD_POST,
   GET_ALL_CUSTOMERS_PENDING,
   GET_ALL_CUSTOMERS_FULFILLED,
   GET_ALL_CUSTOMERS_REJECTED,
+  METHOD_POST,
   POST_CUSTOMERS_PENDING,
   POST_CUSTOMERS_FULFILLED,
   POST_CUSTOMERS_REJECTED,
+  METHOD_PUT,
+  PUT_CUSTOMERS_PENDING,
+  PUT_CUSTOMERS_FULFILLED,
+  PUT_CUSTOMERS_REJECTED,
 } from '../config/constant';
 
 export const fetchData = (method, bool) => {
@@ -18,6 +22,9 @@ export const fetchData = (method, bool) => {
       break;
     case METHOD_POST:
       methodType = POST_CUSTOMERS_PENDING;
+      break;
+    case METHOD_PUT:
+      methodType = PUT_CUSTOMERS_PENDING;
       break;
   }
 
@@ -37,6 +44,9 @@ export const fetchDataFulfilled = (method, data) => {
     case METHOD_POST:
       methodType = POST_CUSTOMERS_FULFILLED;
       break;
+    case METHOD_PUT:
+      methodType = PUT_CUSTOMERS_FULFILLED;
+      break;
   }
 
   return {
@@ -55,6 +65,9 @@ export const fetchDataRejected = (method, error) => {
       break;
     case METHOD_POST:
       methodType = POST_CUSTOMERS_REJECTED;
+      break;
+    case METHOD_PUT:
+      methodType = PUT_CUSTOMERS_REJECTED;
       break;
   }
   return {

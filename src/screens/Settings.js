@@ -18,7 +18,7 @@ class Settings extends Component {
   render() {
     return (
       <View style={style.container}>
-        <Header style={{backgroundColor: '#006A9C'}}>
+        <Header style={{backgroundColor: '#344DD5'}}>
           <Body style={style.textHeader}>
             <Title>SETTINGS</Title>
           </Body>
@@ -48,6 +48,7 @@ export default Settings;
 const style = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F8F9FF',
   },
   textHeader: {
     alignItems: 'center',
