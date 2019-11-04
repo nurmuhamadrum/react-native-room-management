@@ -166,6 +166,12 @@ export default class Login extends Component {
               <Text style={style.textLogin}>LOGIN</Text>
             </TouchableOpacity>
           </LinearGradient>
+          <View style={{alignItems: 'center', marginTop: 100}}>
+            <Text style={style.copyright}>
+              Rum Room's Version 0.0.1 Copyright 2019
+            </Text>
+            <Text style={style.copyright}>by Nur Muhamad Rum</Text>
+          </View>
         </View>
       </LinearGradient>
     );
@@ -257,5 +263,9 @@ const style = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: {width: -1, height: 1},
     textShadowRadius: 1,
+  },
+  copyright: {
+    fontFamily: Fonts.MontSerrat,
+    color: '#fafafa',
   },
 });

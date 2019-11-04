@@ -117,10 +117,6 @@ class Room extends Component {
         </View>
       );
 
-    // let modalEdit;
-    // if (this.state.isEdit) modalEdit = 'EDIT NAME ROOM';
-    // else modalEdit = 'ADD NEW ROOM';
-
     return (
       <View style={style.container}>
         <Header style={{backgroundColor: '#1B885D'}}>
