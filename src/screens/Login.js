@@ -8,13 +8,14 @@ import {
   Image,
   TextInput,
   Dimensions,
+  StatusBar,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-import bgImage from './../assets/Room.jpg';
-import logoImage from './../assets/Hotel.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {storeAuthKey} from './../config/auth';
+import {Fonts} from './../config/utils';
 
 const {width: WIDTH} = Dimensions.get('window');
 
@@ -109,60 +110,71 @@ export default class Login extends Component {
 
   render() {
     return (
-      <ImageBackground source={bgImage} style={style.backgroundContainer}>
-        <View style={style.logoContainer}>
-          <Image source={logoImage} style={style.logo} />
-          <Text style={style.logoText}>RUM ROOM'S HOTEL</Text>
+      <LinearGradient
+        // colors={['#F6DF20', '#F6CE16', '#F8CE1A']}
+        colors={['#1B885D', '#31B580', '#58E8AF']}
+        style={style.backgroundContainer}>
+        <StatusBar backgroundColor="#007554" barStyle="light-content" />
+        <Icon name="bed" color={'#fafafa'} size={90} style={style.logoIcon} />
+        <Text style={style.signinText}>RUM ROOM'S</Text>
+        <View>
+          <LinearGradient
+            colors={['#fafafa', '#ededed']}
+            style={style.containerLogin}>
+            <View style={style.logoContainer}>
+              <Text style={style.logoText}>SIGN IN</Text>
+            </View>
+            <View style={style.inputContainer}>
+              <TextInput
+                style={style.input}
+                placeholder={'Enter the Email Here'}
+                placeholderTextColor={'grey'}
+                underlineColorAndroid="transparent"
+                onChangeText={text => this.emailValidation(text)}
+              />
+              <Icon
+                name="user-circle"
+                color={'#373737'}
+                size={24}
+                style={style.inputIcon}
+              />
+            </View>
+            <View style={style.inputContainer}>
+              <TextInput
+                style={style.input}
+                placeholder={'Enter the Password Here'}
+                secureTextEntry={this.state.pass}
+                placeholderTextColor={'grey'}
+                underlineColorAndroid="transparent"
+                onChangeText={pass => this.passwordValidation(pass)}
+              />
+              <Icon
+                name="key"
+                color={'#373737'}
+                size={24}
+                style={style.inputIcon}
+              />
+              <Icon
+                style={style.eyeIcon}
+                name={this.state.icon}
+                onPress={() => this.changeIcon()}
+              />
+            </View>
+            <TouchableOpacity
+              style={style.btnLoggin}
+              onPress={() => this.handleButtonFunction()}>
+              <Text style={style.textLogin}>LOGIN</Text>
+            </TouchableOpacity>
+          </LinearGradient>
         </View>
-
-        <View style={style.inputContainer}>
-          <TextInput
-            style={style.input}
-            placeholder={'Enter the Email Here'}
-            placeholderTextColor={'grey'}
-            underlineColorAndroid="transparent"
-            onChangeText={text => this.emailValidation(text)}
-          />
-          <Icon
-            name="user-circle"
-            color={'grey'}
-            size={24}
-            style={style.inputIcon}
-          />
-        </View>
-
-        <View style={style.inputContainer}>
-          <TextInput
-            style={style.input}
-            placeholder={'Enter the Password Here'}
-            secureTextEntry={this.state.pass}
-            placeholderTextColor={'grey'}
-            underlineColorAndroid="transparent"
-            onChangeText={pass => this.passwordValidation(pass)}
-          />
-          <Icon name="lock" color={'grey'} size={24} style={style.inputIcon} />
-          <Icon
-            style={style.eyeIcon}
-            name={this.state.icon}
-            onPress={() => this.changeIcon()}
-          />
-        </View>
-
-        <TouchableOpacity
-          style={style.btnLoggin}
-          onPress={() => this.handleButtonFunction()}>
-          <Text style={style.textLogin}>LOGIN</Text>
-        </TouchableOpacity>
-      </ImageBackground>
+      </LinearGradient>
     );
   }
 }
 
 const style = StyleSheet.create({
   backgroundContainer: {
-    flex: 1,
-    width: null,
-    backgroundColor: '#fff',
+    flex: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -172,53 +184,78 @@ const style = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 30,
   },
   logoText: {
-    color: '#fafafa', //006A9C
-    fontSize: 40,
-    fontWeight: 'bold',
-    marginTop: 10,
+    color: 'black', //006A9C
+    fontSize: 25,
+    fontFamily: Fonts.MontSerratBold,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 10,
+    textShadowRadius: 2,
   },
   inputContainer: {
     marginTop: 15,
+    alignItems: 'center',
   },
   input: {
-    width: WIDTH - 55,
-    height: 45,
+    width: WIDTH - 100,
+    height: 40,
     borderRadius: 20,
-    fontSize: 16,
+    fontSize: 12,
     paddingLeft: 50,
     backgroundColor: '#fafafa',
     color: 'rgba(0, 0, 0, 0.7)',
-    marginHorizontal: 25,
+    marginHorizontal: 20,
+    borderWidth: 0.5,
+    fontFamily: Fonts.MontSerrat,
+    // elevation: 5,
   },
   inputIcon: {
     position: 'absolute',
-    top: 10,
-    left: 40,
+    top: 8,
+    left: 35,
   },
   btnLoggin: {
-    width: WIDTH - 55,
+    width: WIDTH - 100,
     height: 45,
     borderRadius: 20,
-    backgroundColor: '#006A9C',
+    backgroundColor: '#ff4400',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,
+    marginHorizontal: 20,
+    elevation: 3,
   },
   textLogin: {
-    fontSize: 20,
+    fontSize: 18,
     color: '#fafafa',
+    fontFamily: Fonts.MontSerrat,
   },
   eyeIcon: {
     position: 'absolute',
     fontSize: 23,
-    left: 340,
-    top: 10,
-    color: 'grey',
+    left: 295,
+    top: 7,
+    color: '#373737',
+  },
+  containerLogin: {
+    backgroundColor: '#fafafa',
+    paddingVertical: 20,
+    borderRadius: 20,
+    elevation: 5,
+  },
+  signinText: {
+    fontFamily: Fonts.MontSerratBold,
+    fontSize: 40,
+    color: '#fafafa',
+    marginBottom: 40,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 1,
+  },
+  logoIcon: {
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 1,
   },
 });

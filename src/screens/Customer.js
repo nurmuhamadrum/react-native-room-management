@@ -6,6 +6,8 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import {Header, Body, Title, Fab, Item, Input} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,6 +17,7 @@ import {connect} from 'react-redux';
 import {getAuthKey} from './../config/auth';
 import {setHeaderAuth} from './../config/api';
 import fetchCustomers from './../_store/customers';
+import {Fonts} from './../config/utils';
 
 import {METHOD_GET, METHOD_POST, METHOD_PUT} from './../config/constant';
 
@@ -133,13 +136,13 @@ class Customer extends Component {
         <View
           style={{
             borderRadius: 5,
-            marginBottom: 10,
+            // marginBottom: 5,
             marginTop: 10,
             marginHorizontal: 15,
-            backgroundColor: '#fafafa',
+            backgroundColor: '#1B885D',
             elevation: 3,
-            borderWidth: 0.5,
-            borderColor: '#344DD5',
+            borderWidth: 0.2,
+            borderColor: 'black',
           }}>
           <View style={{flexDirection: 'row'}}>
             <Image
@@ -153,10 +156,29 @@ class Customer extends Component {
               }}
               source={{uri: image}}
             />
-            <View style={{marginLeft: 20, marginTop: 13}}>
-              <Text style={{fontSize: 20, color: 'black'}}>{name}</Text>
-              <Text style={{color: 'black'}}>{idNum}</Text>
-              <Text style={{color: 'black', fontSize: 15}}>{phoneNum}</Text>
+            <View style={{marginLeft: 20, marginTop: 10}}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  color: '#fafafa',
+                  fontFamily: Fonts.MontSerratBold,
+                  textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                  textShadowOffset: {width: 1, height: 1},
+                  textShadowRadius: 1,
+                }}>
+                {name}
+              </Text>
+              <Text style={{color: '#fafafa', fontFamily: Fonts.MontSerrat}}>
+                {idNum}
+              </Text>
+              <Text
+                style={{
+                  color: '#fafafa',
+                  fontSize: 15,
+                  fontFamily: Fonts.MontSerrat,
+                }}>
+                {phoneNum}
+              </Text>
             </View>
           </View>
         </View>
@@ -175,17 +197,28 @@ class Customer extends Component {
     if (customers.isLoading)
       return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{fontWeight: 'bold'}}>Loading, Please Wait...</Text>
+          <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
 
     return (
       <View style={style.container}>
-        <Header style={{backgroundColor: '#344DD5'}}>
+        <Header style={{backgroundColor: '#1B885D', marginBottom: 10}}>
           <Body style={style.textHeader}>
-            <Title>CUSTOMER</Title>
+            <Title
+              style={{
+                fontFamily: Fonts.MontSerratBold,
+                color: '#fafafa',
+                fontSize: 25,
+                textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                textShadowOffset: {width: 1, height: 1},
+                textShadowRadius: 1,
+              }}>
+              CUSTOMER
+            </Title>
           </Body>
         </Header>
+        <StatusBar backgroundColor="#007554" barStyle="light-content" />
         <FlatList
           data={customers.data}
           renderItem={({item}) =>
@@ -294,6 +327,7 @@ class Customer extends Component {
                 <Text style={style.RoomName}>Phone Number*</Text>
                 <Item style={style.inputRoom} regular>
                   <Input
+                    style={style.inputText}
                     placeholder="Enter the Phone Number..."
                     onChangeText={phone => this.handlePhone(phone)}
                   />
@@ -357,14 +391,14 @@ const style = StyleSheet.create({
   Modal: {
     backgroundColor: '#fafafa',
     justifyContent: 'center',
-    borderRadius: 5,
+    borderRadius: 10,
   },
   modalText: {
     marginTop: 15,
     marginBottom: 20,
     fontSize: 20,
-    fontWeight: 'bold',
     alignContent: 'center',
+    fontFamily: Fonts.MontSerratBold,
   },
   inputRoom: {
     borderWidth: 2,
@@ -373,16 +407,16 @@ const style = StyleSheet.create({
   },
   RoomName: {
     fontSize: 18,
-    fontWeight: 'bold',
     marginLeft: 5,
     marginBottom: 5,
+    fontFamily: Fonts.MontSerratBold,
   },
   modalSave: {
-    backgroundColor: '#344DD5',
+    backgroundColor: '#1B885D',
     paddingVertical: 10,
     paddingHorizontal: 30,
     marginBottom: 20,
-    borderRadius: 5,
+    borderRadius: 10,
     marginHorizontal: 5,
   },
   modalCancel: {
@@ -390,7 +424,11 @@ const style = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     marginBottom: 20,
-    borderRadius: 5,
+    borderRadius: 10,
     marginHorizontal: 5,
+  },
+  inputText: {
+    fontSize: 15,
+    fontFamily: Fonts.MontSerrat,
   },
 });

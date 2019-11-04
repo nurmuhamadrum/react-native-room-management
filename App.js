@@ -22,6 +22,7 @@ const TabNavigator = createBottomTabNavigator({
       tabBarIcon: ({tintColor}) => (
         <Icon name="check-circle" color={tintColor} size={24} />
       ),
+      tabBarOptions: {activeTintColor: '#1B885D'},
     },
   },
   Room: {
@@ -31,6 +32,7 @@ const TabNavigator = createBottomTabNavigator({
       tabBarIcon: ({tintColor}) => (
         <Icon name="bed" color={tintColor} size={24} />
       ),
+      tabBarOptions: {activeTintColor: '#1B885D'},
     },
   },
   Customer: {
@@ -40,6 +42,7 @@ const TabNavigator = createBottomTabNavigator({
       tabBarIcon: ({tintColor}) => (
         <Icon name="id-card" color={tintColor} size={24} />
       ),
+      tabBarOptions: {activeTintColor: '#1B885D'},
     },
   },
   Settings: {
@@ -49,13 +52,14 @@ const TabNavigator = createBottomTabNavigator({
       tabBarIcon: ({tintColor}) => (
         <Icon name="cogs" color={tintColor} size={24} />
       ),
+      tabBarOptions: {activeTintColor: '#1B885D'},
     },
   },
 });
 
 const MyScreen = createSwitchNavigator({
-  routeOne: Login,
-  routeTwo: TabNavigator,
+  RouteOne: Login,
+  RouteTwo: TabNavigator,
 });
 
 const RootNavigation = createAppContainer(MyScreen);

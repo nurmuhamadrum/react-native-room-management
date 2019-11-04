@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar,
+  ActivityIndicator,
+} from 'react-native';
 import {Fab, Header, Body, Title, Input, Item} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
@@ -9,6 +16,7 @@ import {connect} from 'react-redux';
 import {getAuthKey} from './../config/auth';
 import {setHeaderAuth} from './../config/api';
 import fetchRoom from './../_store/rooms';
+import {Fonts} from './../config/utils';
 
 import {METHOD_GET, METHOD_POST, METHOD_PUT} from './../config/constant';
 
@@ -105,7 +113,7 @@ class Room extends Component {
     if (rooms.isLoading)
       return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Text style={{fontWeight: 'bold'}}>Loading, Please Wait...</Text>
+          <ActivityIndicator size="large" color="#0000ff" />
         </View>
       );
 
@@ -115,15 +123,28 @@ class Room extends Component {
 
     return (
       <View style={style.container}>
-        <Header style={{backgroundColor: '#344DD5'}}>
+        <Header style={{backgroundColor: '#1B885D'}}>
           <Body style={style.textHeader}>
-            <Title>ROOM</Title>
+            <Title
+              style={{
+                fontFamily: Fonts.MontSerratBold,
+                color: '#fafafa',
+                fontSize: 25,
+                textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                textShadowOffset: {width: 1, height: 1},
+                textShadowRadius: 1,
+              }}>
+              ALL ROOM'S
+            </Title>
           </Body>
         </Header>
+        <StatusBar backgroundColor="#007554" barStyle="light-content" />
         <FlatGrid
           itemDimension={80}
           items={rooms.data ? rooms.data : null}
           style={style.gridView}
+          onRefresh={() => this.handleGetAllRooms()}
+          refreshing={false}
           renderItem={({item, index}) => (
             <TouchableOpacity
               onPress={() => this.toggleModalEdit(item.id, item.name)}>
@@ -149,6 +170,7 @@ class Room extends Component {
                 <Text style={style.RoomName}>Room Name</Text>
                 <Item style={style.inputRoom} regular>
                   <Input
+                    style={style.inputText}
                     placeholder="Enter the Room Name"
                     onChangeText={name => this.handleName(name)}
                   />
@@ -164,13 +186,13 @@ class Room extends Component {
                   style={style.modalCancel}
                   title="Hide modal"
                   onPress={() => this.toggleModal()}>
-                  <Text style={{color: 'white', fontSize: 18}}>Cancel</Text>
+                  <Text style={style.buttonSubmit}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={style.modalSave}
                   title="Hide modal"
                   onPress={() => this.handleAddRoom()}>
-                  <Text style={{color: 'white', fontSize: 18}}>Save</Text>
+                  <Text style={style.buttonSubmit}>Save</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -187,6 +209,7 @@ class Room extends Component {
                 <Text style={style.RoomName}>Room Name</Text>
                 <Item style={style.inputRoom} regular>
                   <Input
+                    style={style.inputText}
                     placeholder="Enter the Room Name"
                     onChangeText={name => this.handleName(name)}
                   />
@@ -202,13 +225,13 @@ class Room extends Component {
                   style={style.modalCancel}
                   title="Hide modal"
                   onPress={() => this.toggleModalEdit()}>
-                  <Text style={{color: 'white', fontSize: 18}}>Cancel</Text>
+                  <Text style={style.buttonSubmit}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={style.modalSave}
                   title="Hide modal"
                   onPress={() => this.handleUpdate()}>
-                  <Text style={{color: 'white', fontSize: 18}}>Save</Text>
+                  <Text style={style.buttonSubmit}>Save</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -249,16 +272,21 @@ const style = StyleSheet.create({
     // flex: 1,
   },
   itemContainer: {
-    backgroundColor: '#344DD5',
-    borderRadius: 5,
+    backgroundColor: '#1B885D',
+    borderWidth: 0.2,
+    borderRadius: 10,
     padding: 10,
-    height: 100,
-    elevation: 5,
+    height: 90,
+    elevation: 8,
+    alignItems: 'center',
   },
   itemName: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: '600',
+    fontSize: 15,
+    color: '#fafafa',
+    fontFamily: Fonts.MontSerratBold,
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 1,
   },
   itemCode: {
     fontWeight: '600',
@@ -268,14 +296,14 @@ const style = StyleSheet.create({
   Modal: {
     backgroundColor: '#fafafa',
     justifyContent: 'center',
-    borderRadius: 5,
+    borderRadius: 10,
   },
   modalText: {
     marginTop: 15,
     marginBottom: 20,
     fontSize: 20,
-    fontWeight: 'bold',
     alignContent: 'center',
+    fontFamily: Fonts.MontSerratBold,
   },
   modalCancel: {
     fontSize: 18,
@@ -283,17 +311,17 @@ const style = StyleSheet.create({
   },
   inputRoom: {
     borderWidth: 2,
-    borderRadius: 5,
+    borderRadius: 10,
     borderColor: 'black',
   },
   RoomName: {
     fontSize: 18,
-    fontWeight: 'bold',
     marginLeft: 5,
-    marginBottom: 5,
+    marginBottom: 10,
+    fontFamily: Fonts.MontSerratBold,
   },
   modalSave: {
-    backgroundColor: '#344DD5',
+    backgroundColor: '#1B885D',
     paddingVertical: 10,
     paddingHorizontal: 30,
     marginBottom: 20,
@@ -307,5 +335,14 @@ const style = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 5,
     marginHorizontal: 5,
+  },
+  inputText: {
+    fontSize: 15,
+    fontFamily: Fonts.MontSerrat,
+  },
+  buttonSubmit: {
+    fontSize: 15,
+    color: 'white',
+    fontFamily: Fonts.MontSerratBold,
   },
 });
