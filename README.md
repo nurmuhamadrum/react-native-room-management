@@ -59,7 +59,7 @@ Wait till the application is installed and run into your device. Now, you can ex
 
 ## Screenshots
 
-<img src="docs/screenshots/screenshots.png" />
+<img src="docs/screenshots/screenshots.PNG" />
 
 ## Built With
 
