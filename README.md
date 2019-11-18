@@ -7,12 +7,10 @@ Rum's Room is a Room Management Application specifically lodging or hotel where 
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Server Setup](#server-setup)
-  - [Client Setup](#client-setup)
+  - [Setup](#setup)
 - [Screenshots](#screenshots)
 - [Built With](#built-with)
 - [Author](#author)
-- [License](#license)
 
 ## Getting Started
 
@@ -43,7 +41,7 @@ Then, install all the packages that described in `package.json`.
 npm install
 ```
 
-### Client Setup
+### Setup
 
 For the client setup, if you are using physical device to run the app, make sure your ADB drivers already installed or you can use Android Emulator from AVD (Android Virtual Device) Manager of Android Studio (_This part should be done while installing the React Native framework_)
 
