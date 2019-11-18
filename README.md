@@ -1,4 +1,4 @@
-# Room's Room (Room Management)
+# Rum's Room (Room Management)
 
 Rum's Room is a Room Management Application specifically lodging or hotel where to simplify the Checkin & Checkout process to be more effective & efficient, with various features such as Countdown Time, Add Room & Edit Room, Add Customer & Edit Customer and Upload Photos for Admin.
 
