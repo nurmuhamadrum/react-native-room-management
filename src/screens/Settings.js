@@ -5,7 +5,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {removeAuthKey, getAuthKey} from './../config/auth';
 import {setHeaderAuth} from './../config/api';
 import {Fonts} from './../config/utils';
-import ImagePicker from 'react-native-image-picker';
+// import ImagePicker from 'react-native-image-picker';
 import {connect} from 'react-redux';
 import fetchUser from './../_store/user';
 import {METHOD_GET, METHOD_PUT} from './../config/constant';
@@ -48,17 +48,17 @@ class Settings extends Component {
       allowsEditing: false,
     };
 
-    ImagePicker.showImagePicker(options, res => {
-      if (res.uri) {
-        const data = new FormData();
-        data.append('avatar', {
-          name: res.fileName,
-          type: res.type,
-          uri: res.uri,
-        });
-        this.handleUpdateProf(data);
-      }
-    });
+    // ImagePicker.showImagePicker(options, res => {
+    //   if (res.uri) {
+    //     const data = new FormData();
+    //     data.append('avatar', {
+    //       name: res.fileName,
+    //       type: res.type,
+    //       uri: res.uri,
+    //     });
+    //     this.handleUpdateProf(data);
+    //   }
+    // });
   };
 
   render() {
