@@ -32,7 +32,7 @@ Make sure all of these are properly installed in your system.
 First, clone this repository into your system.
 
 ```
-git clone https://github.com/nurmuhamadrum/rums-room-management.git
+git clone https://github.com/nurmuhamadrum/react-native-room-management.git
 ```
 
 Then, install all the packages that described in `package.json`.
